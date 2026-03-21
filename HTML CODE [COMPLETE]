@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FREEBUN AUDIO MASTERING — Professional Online Mastering Tool</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#0c0c1a;
+      --bg2:#1a1a2e;
+      --panel:rgba(16, 20, 40, 0.7);
+      --panel2:rgba(10, 12, 25, 0.8);
+      --stroke:rgba(255,255,255,.08);
+      --stroke2:rgba(255,255,255,.15);
+      --text:#ffffff;
+      --muted:#a0a0a0;
+      --muted2:#6a6a85;
+      --accent:#4ecdc4;
+      --accent2:#7f5af0;
+      --shadow: 0 18px 50px rgba(0,0,0,.55);
+      --radius:16px;
+      --radius2:12px;
+      --mono: "Inter", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --display: "Playfair Display", Georgia, serif;
+    }
+
+    /* 14 Beautiful Themes with smooth transitions */
+    html[data-theme="cosmic"]{
+      --bg:#0c0c1a;
+      --bg2:#1a1a2e;
+      --panel:rgba(16, 20, 40, 0.7);
+      --accent:#4ecdc4;
+      --accent2:#7f5af0;
+    }
+
+    html[data-theme="nebula"]{
+      --bg:#1a0b2e;
+      --bg2:#2d1b4e;
+      --panel:rgba(45, 27, 78, 0.6);
+      --accent:#ff6b9d;
+      --accent2:#c44569;
+    }
+
+    html[data-theme="supernova"]{
+      --bg:#2e1a1a;
+      --bg2:#4e2d1b;
+      --panel:rgba(78, 45, 27, 0.6);
+      --accent:#ffa500;
+      --accent2:#ff6b35;
+    }
+
+    html[data-theme="void"]{
+      --bg:#000000;
+      --bg2:#1a1a1a;
+      --panel:rgba(30, 30, 30, 0.8);
+      --accent:#ffffff;
+      --accent2:#c0c0c0;
+    }
+
+    html[data-theme="ocean"]{
+      --bg:#001f3f;
+      --bg2:#003366;
+      --panel:rgba(0, 51, 102, 0.6);
+      --accent:#7fdbff;
+      --accent2:#39cccc;
+    }
+
+    html[data-theme="aurora"]{
+      --bg:#0f2027;
+      --bg2:#203a43;
+      --panel:rgba(32, 58, 67, 0.6);
+      --accent:#00ff88;
+      --accent2:#2ecc71;
+    }
+
+    html[data-theme="sunset"]{
+      --bg:#2c1a1a;
+      --bg2:#4a2c2c;
+      --panel:rgba(74, 44, 44, 0.6);
+      --accent:#ff6b6b;
+      --accent2:#ee5a6f;
+    }
+
+    html[data-theme="cyber"]{
+      --bg:#1a0a1a;
+      --bg2:#2d1b4e;
+      --panel:rgba(45, 27, 78, 0.6);
+      --accent:#ff00ff;
+      --accent2:#00ffff;
+    }
+
+    html[data-theme="golden"]{
+      --bg:#2e2a1a;
+      --bg2:#4e4a2d;
+      --panel:rgba(78, 74, 45, 0.6);
+      --accent:#ffd700;
+      --accent2:#ffaa00;
+    }
+
+    html[data-theme="ice"]{
+      --bg:#0f2027;
+      --bg2:#1c3a4a;
+      --panel:rgba(28, 58, 74, 0.6);
+      --accent:#b0e0e6;
+      --accent2:#87ceeb;
+    }
+
+    html[data-theme="lava"]{
+      --bg:#2e1a0f;
+      --bg2:#4e2d1b;
+      --panel:rgba(78, 45, 27, 0.6);
+      --accent:#ff4500;
+      --accent2:#ff6347;
+    }
+
+    html[data-theme="forest"]{
+      --bg:#0f2e1a;
+      --bg2:#1b4e2d;
+      --panel:rgba(27, 78, 45, 0.6);
+      --accent:#90ee90;
+      --accent2:#3cb371;
+    }
+
+    html[data-theme="cherry"]{
+      --bg:#2e1a2a;
+      --bg2:#4e2d4a;
+      --panel:rgba(78, 45, 74, 0.6);
+      --accent:#ffb6c1;
+      --accent2:#ff69b4;
+    }
+
+    html[data-theme="midnight"]{
+      --bg:#000428;
+      --bg2:#004e92;
+      --panel:rgba(0, 78, 146, 0.6);
+      --accent:#00d2ff;
+      --accent2:#3a7bd5;
+    }
+
+    *{ box-sizing:border-box; transition: background-color 0.5s ease, color 0.3s ease; }
+    
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      padding:16px;
+    }
+
+    body.theme-transition {
+      animation: spaceWarp 0.8s ease-in-out;
+    }
+
+    @keyframes spaceWarp {
+      0% { filter: blur(0px) brightness(1); transform: scale(1); }
+      50% { filter: blur(15px) brightness(1.5); transform: scale(1.05); }
+      100% { filter: blur(0px) brightness(1); transform: scale(1); }
+    }
+
+    .wrap{ max-width: 1100px; margin:0 auto; }
+
+    /* Header with elegant title */
+    header{
+      text-align: center;
+      padding: 30px 20px 20px;
+      position: relative;
+    }
+
+    .brand-title {
+      font-family: var(--display);
+      font-size: 2.8em;
+      font-weight: 600;
+      font-style: italic;
+      background: linear-gradient(135deg, var(--accent), #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(255,255,255,0.2);
+      letter-spacing: -1px;
+      margin: 0;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 1.1em;
+      margin-top: 10px;
+      font-weight: 300;
+    }
+
+    .topbar{ 
+      display:flex; 
+      gap:12px; 
+      justify-content: center;
+      align-items:center; 
+      flex-wrap:wrap; 
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      border: 1px solid var(--stroke);
+    }
+
+    .pill{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      padding:10px 14px;
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      background: rgba(0,0,0,0.3);
+    }
+
+    .pill label{ font-size:12px; color:var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    select{
+      font-family:var(--sans);
+      background:transparent;
+      color:var(--text);
+      border:none;
+      outline:none;
+      font-weight:600;
+      cursor:pointer;
+      font-size: 14px;
+    }
+
+    select option {
+      background: var(--bg2);
+      color: var(--text);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+      padding:14px;
+    }
+
+    @media (min-width: 980px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+      .span2{ grid-column: span 2; }
+    }
+
+    .panel{
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: .5;
+      pointer-events:none;
+    }
+
+    .panel > *{ position:relative; }
+
+    .panel-h{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 16px;
+      border-bottom:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(0,0,0,.2), transparent);
+    }
+
+    .panel-title{
+      font-family:var(--display);
+      font-size:16px;
+      letter-spacing:0.5px;
+      color:var(--accent);
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .panel-b{ padding:16px; }
+
+    .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .stack{ display:flex; flex-direction:column; gap:10px; }
+    .small{ font-size:12px; color:var(--muted2); font-weight: 500; }
+
+    audio{ width: 100%; border-radius: var(--radius2); margin-top:10px; }
+
+    button{
+      font-family:var(--sans);
+      border:none;
+      border-radius: 12px;
+      padding:12px 18px;
+      font-weight:700;
+      cursor:pointer;
+      color: #0a0a0f;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    button.primary{
+      color:#05050a;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 26px rgba(78, 205, 196, 0.25);
+    }
+
+    button.ghost{
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--stroke2);
+      font-weight:600;
+    }
+
+    button.ghost:hover {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.05);
+    }
+
+    button:disabled{ opacity:.55; cursor:not-allowed; transform: none !important; }
+
+    input[type="file"]{ color: var(--text); }
+
+    .toggle{
+      padding:10px 14px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.3);
+      color: var(--text);
+      border:1px solid var(--stroke);
+      font-weight:700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .toggle:hover {
+      border-color: var(--accent);
+    }
+
+    .infoBtn{
+      width:32px;
+      height:32px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      border:1px solid var(--stroke);
+      font-family: var(--mono);
+      padding:0;
+      user-select:none;
+      cursor: help;
+      transition: all 0.3s;
+    }
+
+    .infoBtn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .meters{ display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
+    .meter{
+      flex: 1;
+      min-width: 140px;
+      border:1px solid var(--stroke);
+      border-radius: 14px;
+      padding:14px;
+      background: rgba(0,0,0,.25);
+      text-align: center;
+    }
+
+    .val{ 
+      font-weight:800; 
+      font-family: var(--mono); 
+      font-size: 18px; 
+      color: var(--accent);
+    }
+
+    .divider{ height:1px; background: var(--stroke); margin: 14px 0; }
+
+    .hint{
+      border:1px dashed var(--stroke2);
+      background: rgba(0,0,0,.2);
+      padding:12px 14px;
+      border-radius: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .tooltip{
+      position: fixed;
+      max-width: 420px;
+      z-index: 9999;
+      border: 1px solid var(--stroke2);
+      border-radius: 14px;
+      background: var(--panel2);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      padding: 14px 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text);
+      display:none;
+      white-space: pre-line;
+    }
+
+    footer{
+      padding: 20px 14px 16px 14px;
+      color: var(--muted2);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .kbd{
+      font-family: var(--mono);
+      border: 1px solid var(--stroke);
+      padding: 3px 8px;
+      border-radius: 10px;
+      color: var(--muted);
+      background: rgba(255,255,255,.05);
+    }
+
+    /* Drop zone styling */
+    .drop-zone {
+      border: 2px dashed var(--accent);
+      border-radius: var(--radius);
+      padding: 40px;
+      text-align: center;
+      background: rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 15px;
+    }
+
+    .drop-zone:hover {
+      background: rgba(78, 205, 196, 0.1);
+      transform: scale(1.01);
+    }
+
+    .drop-zone.dragover {
+      background: rgba(78, 205, 196, 0.15);
+      border-color: var(--accent2);
+    }
+
+    .upload-icon {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    /* A/B Controls */
+    .ab-controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .ab-button {
+      padding: 14px 35px;
+      font-size: 1em;
+      border: 2px solid var(--stroke);
+      background: rgba(0,0,0,0.3);
+      color: var(--text);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      font-weight: 600;
+    }
+
+    .ab-button:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .ab-button.active {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(127, 90, 240, 0.2));
+      box-shadow: 0 0 20px rgba(78, 205, 196, 0.2);
+    }
+
+    .ab-button::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--stroke);
+    }
+
+    .ab-button.active::before {
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* Download section */
+    .download-section {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .download-btn {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+    }
+
+    /* Donation Modal */
+    .donation-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .donation-modal.active {
+      display: flex;
+    }
+
+    .donation-box {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .close-modal:hover {
+      color: var(--accent);
+    }
+
+    .donation-title {
+      font-family: var(--display);
+      font-size: 1.8em;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .donation-subtitle {
+      color: var(--muted);
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+
+    .donation-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .donation-btn-support {
+      background: linear-gradient(135deg, #00ff88, #00cc6a);
+      color: #000;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+
+    .donation-btn-support:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+    }
+
+    .donation-btn-ignore {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--stroke);
+      transition: all 0.3s;
+    }
+
+    .donation-btn-ignore:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: #ff4444;
+    }
+
+    .crypto-addresses {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .crypto-addresses.active {
+      display: block;
+    }
+
+    .crypto-item {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--stroke);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .crypto-label {
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .crypto-address {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text);
+      word-break: break-all;
+      margin-bottom: 8px;
+    }
+
+    .copy-btn {
+      background: var(--accent);
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+
+    .copy-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .copy-btn.copied {
+      background: #00ff88;
+    }
+
+    .support-action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .download-countdown {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Intro Overlay */
+    #intro-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, var(--bg2), var(--bg));
+      z-index: 20000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      backdrop-filter: blur(4px);
+      transition: opacity 1s ease, visibility 1s ease;
+      cursor: pointer;
+      text-align: center;
+    }
+    #intro-overlay.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .intro-logo {
+      font-family: var(--display);
+      font-size: 4rem;
+      font-style: italic;
+      background: linear-gradient(135deg, var(--accent), #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(255,255,255,0.3);
+      letter-spacing: -2px;
+      margin-bottom: 1rem;
+      animation: pulseGlow 1.5s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      0% { text-shadow: 0 0 10px rgba(78,205,196,0.5); }
+      100% { text-shadow: 0 0 30px rgba(78,205,196,0.9); }
+    }
+    .intro-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-top: 1rem;
+      animation: fadeInUp 1s ease;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .liquid-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .liquid-bg canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    html[dir="rtl"] .row{ flex-direction: row-reverse; }
+    html[dir="rtl"] header{ flex-direction: row-reverse; }
+    html[dir="rtl"] .brand{ text-align:right; }
+    html[dir="rtl"] .pill{ flex-direction: row-reverse; }
+  </style>
+<base target="_blank">
+</head>
+
+<body>
+  <div id="intro-overlay">
+    <div class="liquid-bg"><canvas id="introCanvas"></canvas></div>
+    <div class="intro-logo">FREEBUN</div>
+    <div class="intro-sub">click anywhere to begin</div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <h1 class="brand-title" data-i18n="app_title">FREEBUN Audio Mastering</h1>
+      <p class="tagline" data-i18n="app_sub">Worldwide access</p>
+
+      <div class="topbar">
+        <div class="pill">
+          <label for="langSelect" data-i18n="lang_label">Language</label>
+          <select id="langSelect" aria-label="Language"></select>
+        </div>
+        <div class="pill">
+          <label for="themeSelect" data-i18n="theme_label">Theme</label>
+          <select id="themeSelect" aria-label="Theme">
+            <option value="cosmic" data-i18n="theme_cosmic">Cosmic Nebula</option>
+            <option value="nebula" data-i18n="theme_nebula">Purple Void</option>
+            <option value="supernova" data-i18n="theme_supernova">Supernova Burst</option>
+            <option value="void" data-i18n="theme_void">Deep Void</option>
+            <option value="ocean" data-i18n="theme_ocean">Deep Ocean</option>
+            <option value="aurora" data-i18n="theme_aurora">Aurora Borealis</option>
+            <option value="sunset" data-i18n="theme_sunset">Desert Sunset</option>
+            <option value="cyber" data-i18n="theme_cyber">Cyber Punk</option>
+            <option value="golden" data-i18n="theme_golden">Golden Era</option>
+            <option value="ice" data-i18n="theme_ice">Arctic Ice</option>
+            <option value="lava" data-i18n="theme_lava">Volcanic Lava</option>
+            <option value="forest" data-i18n="theme_forest">Mystic Forest</option>
+            <option value="cherry" data-i18n="theme_cherry">Cherry Blossom</option>
+            <option value="midnight" data-i18n="theme_midnight">Midnight City</option>
+          </select>
+        </div>
+        <!-- DLC Loader -->
+        <div class="pill">
+          <label for="dlcFileInput">Load DLC</label>
+          <input type="file" id="dlcFileInput" accept=".json" style="display:none" />
+          <button id="dlcLoadBtn" class="ghost">Load Extension</button>
+        </div>
+        <div id="dlcStatus" class="small" style="margin-top:8px;"></div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="panel-h"><div class="panel-title" data-i18n="p1_title">1. Import Audio</div></div>
+        <div class="panel-b">
+          <div class="drop-zone" id="dropZone">
+            <div class="upload-icon">📁</div>
+            <h3 data-i18n="drop_title">Drop your audio here</h3>
+            <p data-i18n="drop_subtitle">Supports WAV, MP3, M4A, FLAC</p>
+            <input type="file" id="fileInput" accept="audio/*" style="display: none;" />
+          </div>
+          <div id="infoInput" class="small" style="margin-bottom: 10px;"></div>
+          <!-- Loudness Warning -->
+          <div class="hint" style="margin-top: 12px; background: rgba(0,0,0,0.3);">
+            <strong>💡 Best results:</strong> Input mix should be between <strong>-14 LUFS and -11 LUFS</strong> (maximum -10.8 LUFS).  
+            <span style="display:block; font-size:11px; margin-top:4px;">This ensures optimal headroom and preserves dynamic range.</span>
+          </div>
+          <audio id="originalPlayer" controls></audio>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-h"><div class="panel-title" data-i18n="p2_title">2. Presets & Modes</div></div>
+        <div class="panel-b">
+          <div class="row" style="align-items:flex-end;">
+            <div class="stack" style="min-width:210px; flex: 1;">
+              <label class="small" for="presetSelect" data-i18n="preset_label">Preset</label>
+              <select id="presetSelect">
+                <option value="trapdefault" data-i18n="preset_trap">Trap Signature [YSL New Wave - Concrete Boys - Wheezy Outta Here - Future - Offset - Quavo - Takeoff - ATL Jacob inspired]</option>
+                <option value="metro" data-i18n="preset_metro">Rap Signature [Ye - Lil Novi - Skepta - A$AP Rocky - Meekmill - Tory Lanez - Metro Boomin - Dr. Dre - 2Geeked - Pharell inspired]</option>
+                <option value="soft" data-i18n="preset_soft">Air Signature [Aishe - Jay-Z - Adele - Sarz - Costa Titch - P Square - Ty Dolla $ign inspired]</option>
+                <option value="punch" data-i18n="preset_punch">Radio Signature [Spice - Vanessa Bling - DaBaby - Vybz Kartel - Radio Version Songs inspired]</option>
+              </select>
+            </div>
+            <button class="infoBtn" data-doc="preset" aria-label="Preset documentation">i</button>
+          </div>
+
+          <div class="row" style="align-items:flex-end; margin-top: 15px;">
+            <div class="stack" style="min-width:210px; flex: 1;">
+              <label class="small" for="modeSelect" data-i18n="mode_label">Mode</label>
+              <select id="modeSelect">
+                <option value="softMode" data-i18n="mode_soft">Mode: Soft</option>
+                <option value="punchMode" data-i18n="mode_punch">Mode: Punch</option>
+                <option value="hardMode" data-i18n="mode_hard">Mode: Hard</option>
+                <option value="ultraMode" data-i18n="mode_ultra">Mode: Ultra Trap</option>
+              </select>
+            </div>
+            <button class="infoBtn" data-doc="mode" aria-label="Mode documentation">i</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <button id="processBtn" class="primary" data-i18n="btn_master">Master</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <label class="small" data-i18n="cleanup_label">Mud-cleaner (auto) & ATL width</label>
+          <div class="row">
+            <button id="mudToggle" class="toggle">Mud Cleaner: AUTO</button>
+            <button class="infoBtn" data-doc="mud" aria-label="Mud Cleaner documentation">i</button>
+            <button id="widthToggle" class="toggle">ATL Width: ON</button>
+            <button class="infoBtn" data-doc="width" aria-label="Width documentation">i</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel span2">
+        <div class="panel-h"><div class="panel-title" data-i18n="p3_title">3. Playback, A/B, Export</div></div>
+        <div class="panel-b">
+          <div class="row">
+            <div style="flex:1; min-width:260px;">
+              <label class="small" data-i18n="player_label">Mastered output</label>
+              <audio id="processedPlayer" controls></audio>
+            </div>
+          </div>
+
+          <div class="ab-controls">
+            <button class="ab-button active" id="btnInput" data-i18n="ab_input">INPUT (Original)</button>
+            <button class="ab-button" id="btnOutput" data-i18n="ab_output">OUTPUT (Mastered)</button>
+          </div>
+
+          <div class="download-section">
+            <button id="downloadWavBtn" class="download-btn" data-i18n="btn_wav" disabled>Download WAV</button>
+            <button id="reportBtn" class="download-btn" disabled data-i18n="btn_report" style="background: linear-gradient(135deg, #667eea, #764ba2);">Download PDF Report</button>
+          </div>
+
+          <div class="meters">
+            <div class="meter">
+              <div class="small" data-i18n="meter_in_rms">Input RMS</div>
+              <div id="inputRMS" class="val">--</div>
+              <div class="small"><span data-i18n="meter_in_lufs">Approx. LUFS (in)</span>: <span id="lufsIn" class="val" style="font-size:12px;">--</span></div>
+            </div>
+            <div class="meter">
+              <div class="small" data-i18n="meter_out_rms">Output RMS</div>
+              <div id="outputRMS" class="val">--</div>
+              <div class="small"><span data-i18n="meter_out_lufs">Approx. LUFS (out)</span>: <span id="lufsOut" class="val" style="font-size:12px;">--</span></div>
+            </div>
+            <div class="meter">
+              <div class="small" data-i18n="meter_delta">Delta</div>
+              <div class="small"><span data-i18n="meter_gain">RMS gain</span>: <span id="deltaRms" class="val" style="font-size:12px;">--</span></div>
+              <div class="small"><span data-i18n="meter_lufs_delta">LUFS change</span>: <span id="deltaLufs" class="val" style="font-size:12px;">--</span></div>
+              <div class="small"><span data-i18n="meter_autogain">Auto-gain</span>: <span id="autoGainTxt" class="val" style="font-size:12px;">--</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <span class="kbd">FREEBUN</span>
+      <div style="margin-top: 12px; font-size: 11px;">
+        Developed & maintained by <a href="https://x.com/einsteinupgrade" target="_blank" style="color: var(--accent);">einstein upgrade</a><br>
+        Open source on <a href="https://github.com/einsteinupgrade/FREEBUN-by-einstein-upgrade-" target="_blank" style="color: var(--accent);">GitHub</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Donation Modal -->
+  <div id="donationModal" class="donation-modal">
+    <div class="donation-box">
+      <div class="close-modal" id="closeModalBtn">&times;</div>
+      <div class="donation-title">Support FREEBUN</div>
+      <div class="donation-subtitle">This tool is free and open source. Your support helps keep it alive and evolving.</div>
+      
+      <div id="donationButtons" class="donation-buttons">
+        <button class="donation-btn-support" id="supportBtn">SUPPORT THE PROJECT :)</button>
+        <button class="donation-btn-ignore" id="ignoreBtn">IDGAF :(</button>
+      </div>
+
+      <div id="cryptoAddresses" class="crypto-addresses">
+        <div class="crypto-item">
+          <div class="crypto-label">Bitcoin (BTC)</div>
+          <div class="crypto-address" id="btcAddr">bc1quq9q8fjtvp36rxm4ken60jxy5kf5gptskd0p6s</div>
+          <button class="copy-btn" data-copy="bc1quq9q8fjtvp36rxm4ken60jxy5kf5gptskd0p6s">COPY</button>
+        </div>
+        <div class="crypto-item">
+          <div class="crypto-label">Ethereum (ETH)</div>
+          <div class="crypto-address" id="ethAddr">0x85E2a4Bd9aD6E17452ef82f3038308D7988C3544</div>
+          <button class="copy-btn" data-copy="0x85E2a4Bd9aD6E17452ef82f3038308D7988C3544">COPY</button>
+        </div>
+        <div class="crypto-item">
+          <div class="crypto-label">Solana (SOL)</div>
+          <div class="crypto-address" id="solAddr">xvbDr2YkpVb85vme7TDoKceTRJoH7wqbEqEJUUT8gXN</div>
+          <button class="copy-btn" data-copy="xvbDr2YkpVb85vme7TDoKceTRJoH7wqbEqEJUUT8gXN">COPY</button>
+        </div>
+        <div class="crypto-item">
+          <div class="crypto-label">Tron (TRX)</div>
+          <div class="crypto-address" id="trxAddr">TT5PNEpuiUy7j6jVhYnPDv6eDE8HQuAUwz</div>
+          <button class="copy-btn" data-copy="TT5PNEpuiUy7j6jVhYnPDv6eDE8HQuAUwz">COPY</button>
+        </div>
+        <div class="support-action-buttons">
+          <button id="justDownloadBtn" class="download-btn">Just Download</button>
+        </div>
+      </div>
+
+      <div id="downloadCountdown" class="download-countdown"></div>
+    </div>
+  </div>
+
+  <div id="tooltip" class="tooltip" role="dialog" aria-live="polite"></div>
+
+<script>
+  // === INTRO ANIMATION ===
+  const introOverlay = document.getElementById('intro-overlay');
+  const introCanvas = document.getElementById('introCanvas');
+  let introAnimId = null;
+
+  function initLiquidCanvas() {
+    if (!introCanvas) return;
+    const ctx = introCanvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let time = 0;
+
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      introCanvas.width = width;
+      introCanvas.height = height;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawLiquid() {
+      if (!introCanvas || introOverlay.style.opacity === '0') return;
+      ctx.clearRect(0, 0, width, height);
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, 'rgba(78,205,196,0.15)');
+      gradient.addColorStop(0.5, 'rgba(127,90,240,0.2)');
+      gradient.addColorStop(1, 'rgba(78,205,196,0.1)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        const offset = i * Math.PI * 2 / 4;
+        for (let x = 0; x < width; x += 20) {
+          const y = height/2 + Math.sin(x * 0.005 + time + offset) * 40 + Math.cos(x * 0.01 + time * 0.8) * 20;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(78,205,196,${0.3 + Math.sin(time + i)*0.1})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+      time += 0.02;
+      introAnimId = requestAnimationFrame(drawLiquid);
+    }
+    drawLiquid();
+  }
+
+  function playIntroSound() {
+    if (!window.soundCtx) {
+      window.soundCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    const ctx = window.soundCtx;
+    const now = ctx.currentTime;
+    const gain = ctx.createGain();
+    gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.5);
+    
+    // chord: Cmaj7
+    const freqs = [261.63, 329.63, 392.00, 493.88];
+    freqs.forEach((f, idx) => {
+      const osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      osc.connect(gain);
+      osc.start(now + idx * 0.08);
+      osc.stop(now + 1.8);
+    });
+    // soft pad
+    const pad = ctx.createOscillator();
+    pad.type = 'sine';
+    pad.frequency.value = 130.81;
+    pad.connect(gain);
+    pad.start(now);
+    pad.stop(now + 2.2);
+  }
+
+  function finishIntro() {
+    if (introAnimId) cancelAnimationFrame(introAnimId);
+    introOverlay.classList.add('fade-out');
+    setTimeout(() => {
+      introOverlay.remove();
+    }, 1000);
+  }
+
+  introOverlay.addEventListener('click', (e) => {
+    e.stopPropagation();
+    playIntroSound();
+    finishIntro();
+  });
+  initLiquidCanvas();
+
+  // === MAIN SCRIPT ===
+  const LANGS = [
+    { code: 'en', name: 'English' },
+    { code: 'fr', name: 'Français' },
+    { code: 'es', name: 'Español' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'zh-Hans', name: '中文(简体)' },
+    { code: 'ja', name: '日本語' },
+    { code: 'pt', name: 'Português' },
+    { code: 'ar-SA', name: 'العربية' },
+    { code: 'ru', name: 'Русский' }
+  ];
+
+  const i18n = {
+    en: {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "Worldwide access",
+      lang_label: "Language",
+      theme_label: "Theme",
+      theme_cosmic: "Cosmic Nebula",
+      theme_nebula: "Purple Void",
+      theme_supernova: "Supernova Burst",
+      theme_void: "Deep Void",
+      theme_ocean: "Deep Ocean",
+      theme_aurora: "Aurora Borealis",
+      theme_sunset: "Desert Sunset",
+      theme_cyber: "Cyber Punk",
+      theme_golden: "Golden Era",
+      theme_ice: "Arctic Ice",
+      theme_lava: "Volcanic Lava",
+      theme_forest: "Mystic Forest",
+      theme_cherry: "Cherry Blossom",
+      theme_midnight: "Midnight City",
+      p1_title: "1. Import Audio",
+      drop_title: "Drop your audio here",
+      drop_subtitle: "Supports WAV, MP3, M4A, FLAC",
+      p2_title: "2. Presets & Modes",
+      preset_label: "Preset",
+      preset_trap: "Trap Signature [YSL New Wave - Concrete Boys - Wheezy Outta Here - Future - Offset - Quavo - Takeoff - ATL Jacob inspired]",
+      preset_metro: "Rap Signature [Ye - Lil Novi - Skepta - A$AP Rocky - Meekmill - Tory Lanez - Metro Boomin - Dr. Dre - 2Geeked - Pharell inspired]",
+      preset_soft: "Air Signature [Aishe - Jay-Z - Adele - Sarz - Costa Titch - P Square - Ty Dolla $ign inspired]",
+      preset_punch: "Radio Signature [Spice - Vanessa Bling - DaBaby - Vybz Kartel - Radio Version Songs inspired]",
+      mode_label: "Mode",
+      mode_soft: "Mode: Soft",
+      mode_punch: "Mode: Punch",
+      mode_hard: "Mode: Hard",
+      mode_ultra: "Mode: Ultra Trap",
+      btn_master: "Master",
+      cleanup_label: "Mud-cleaner (auto) & ATL width",
+      p3_title: "3. Playback, A/B, Export",
+      player_label: "Mastered output",
+      ab_input: "INPUT (Original)",
+      ab_output: "OUTPUT (Mastered)",
+      btn_wav: "Download WAV",
+      btn_report: "Download PDF Report",
+      meter_in_rms: "Input RMS",
+      meter_in_lufs: "Approx. LUFS (in)",
+      meter_out_rms: "Output RMS",
+      meter_out_lufs: "Approx. LUFS (out)",
+      meter_delta: "Delta",
+      meter_gain: "RMS gain",
+      meter_lufs_delta: "LUFS change",
+      meter_autogain: "Auto-gain",
+      alert_import_first: "Import an audio file first.",
+      status_processing: "Processing…",
+      status_master: "Master",
+      doc_preset_title: "PRESET — What It Does",
+      doc_preset: "TRAP SIGNATURE: Aggressive low-end punch with crisp highs. Designed for modern trap, drill, and Atlanta-style productions. Boosts 808s and adds that signature 'Wheezy Outta Here' brightness.\n\nRAP SIGNATURE: Balanced, warm, and radio-ready. Perfect for traditional hip-hop, boom-bap, and melodic rap. Inspired by the clean, polished sound of Metro Boomin and Dr. Dre mixes.\n\nAIR SIGNATURE: Transparent, open, and dynamic. Preserves natural transients and breathing room. Ideal for acoustic instruments, vocals, and audiophile-grade releases.\n\nRADIO SIGNATURE: Maximum loudness with controlled dynamics. Optimized for streaming platforms and broadcast. Gets your track competitive with commercial radio releases.",
+      doc_mode_title: "MODE — Intensity Control",
+      doc_mode: "SOFT: Gentle processing that preserves dynamics. Perfect for jazz, classical, acoustic, and any material where natural transients are crucial. Minimal compression, subtle EQ.\n\nPUNCH: Balanced aggression. Adds controlled weight and presence without crushing dynamics. Great for most genres including pop, R&B, and indie.\n\nHARD: Significant loudness boost with tighter compression. For tracks that need to cut through dense mixes. Ideal for EDM, trap, and high-energy productions.\n\nULTRA TRAP: Maximum aggression. Heavy limiting, aggressive EQ curves, and maximum perceived loudness. For competitive streaming releases where loudness is priority.",
+      doc_mud_title: "MUD CLEANER — Frequency Surgery",
+      doc_mud: "AUTO MODE: Intelligently detects buildup in the 'mud' region (200-400Hz) — that boxy, congested sound from overlapping instruments. Applies surgical cuts only when needed based on input density.\n\nThis frequency range is where guitars, bass, kick drums, and vocals all fight for space. The Mud Cleaner creates clarity without thinning your mix.\n\nOFF: Bypass the mud filter if your mix is already clean or if you want full low-mid retention.",
+      doc_width_title: "ATL WIDTH — Stereo Enhancement",
+      doc_width: "ON: Applies subtle stereo widening inspired by Atlanta mixing engineers. Expands the stereo field by adjusting the balance between mid and side information. Creates that spacious, expensive 'wide' sound heard on countless hits.\n\nFor mono sources, intelligently creates pseudo-stereo by duplicating to L/R with balanced gains. Maintains mono compatibility for club systems.\n\nOFF: Pure mono/center focus. Use for bass-heavy tracks, podcasts, or when strict mono compatibility is required.",
+      report_title: "FREEBUN AUDIO MASTERING — Engineer Report",
+      report_section_settings: "Chosen settings",
+      report_section_metrics: "Measured changes",
+      report_section_notes: "Notes",
+      report_note1: "LUFS is an approximation (quick estimation). Use a dedicated loudness meter for compliance-critical work.",
+      mud_auto: "Mud Cleaner: AUTO",
+      mud_off: "Mud Cleaner: OFF",
+      width_on: "ATL Width: ON",
+      width_off: "ATL Width: OFF",
+      info_input: "SampleRate: {sr} Hz | Channels: {ch}",
+      err_load_audio: "Error loading audio",
+      err_mastering: "Mastering error",
+      err_report: "Report error",
+      rep_preset: "Preset",
+      rep_mode: "Mode",
+      rep_mud: "Mud Cleaner",
+      rep_width: "ATL Width",
+      rep_width_factor: "Width factor",
+      rep_limiter_thr: "Limiter threshold (dB)",
+      rep_comp_thr: "Compression threshold (dB)",
+      rep_comp_ratio: "Compression ratio",
+      rep_low_shelf: "Low shelf (dB)",
+      rep_high_shelf: "High shelf (dB)",
+      rep_mud_cut: "Mud cut (dB)",
+      rep_on: "ON",
+      rep_off: "OFF",
+      rep_auto: "AUTO",
+      rep_input_rms: "Input RMS",
+      rep_output_rms: "Output RMS",
+      rep_input_peak: "Input Peak",
+      rep_output_peak: "Output Peak",
+      rep_input_lufs: "Input LUFS (approx.)",
+      rep_output_lufs: "Output LUFS (approx.)",
+      rep_rms_gain: "RMS gain",
+      rep_autogain: "Auto-gain",
+      rep_crest_in: "Crest factor (in)",
+      rep_crest_out: "Crest factor (out)",
+      rep_lufs_delta: "LUFS delta",
+      countdown_support: "Download starting in {s} seconds...",
+      countdown_ignore: "Download starting in {s} seconds...",
+      copied: "COPIED!"
+    },
+    fr: {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "Accès mondial",
+      lang_label: "Langue",
+      theme_label: "Thème",
+      p1_title: "1. Importer l'audio",
+      drop_title: "Déposez votre audio ici",
+      drop_subtitle: "Supporte WAV, MP3, M4A, FLAC",
+      p2_title: "2. Préréglages & Modes",
+      preset_label: "Préréglage",
+      mode_label: "Mode",
+      mode_soft: "Mode: Soft",
+      mode_punch: "Mode: Punch",
+      mode_hard: "Mode: Hard",
+      mode_ultra: "Mode: Ultra Trap",
+      btn_master: "Masteriser",
+      cleanup_label: "Mud-cleaner (auto) & Largeur ATL",
+      p3_title: "3. Lecture, A/B, Export",
+      player_label: "Sortie masterisée",
+      ab_input: "ENTRÉE (Original)",
+      ab_output: "SORTIE (Masterisé)",
+      btn_wav: "Télécharger WAV",
+      btn_report: "Télécharger le rapport PDF",
+      meter_in_rms: "RMS Entrée",
+      meter_in_lufs: "LUFS (entrée, approx.)",
+      meter_out_rms: "RMS Sortie",
+      meter_out_lufs: "LUFS (sortie, approx.)",
+      meter_delta: "Différence",
+      meter_gain: "Gain RMS",
+      meter_lufs_delta: "Changement LUFS",
+      meter_autogain: "Auto-gain",
+      alert_import_first: "Importez d'abord un fichier audio.",
+      status_processing: "Traitement…",
+      status_master: "Masteriser",
+      report_title: "FREEBUN AUDIO MASTERING — Rapport ingénieur",
+      mud_auto: "Mud Cleaner: AUTO",
+      mud_off: "Mud Cleaner: OFF",
+      width_on: "ATL Width: ON",
+      width_off: "ATL Width: OFF",
+      rep_on: "ON",
+      rep_off: "OFF",
+      rep_auto: "AUTO",
+      countdown_support: "Téléchargement dans {s} secondes...",
+      countdown_ignore: "Téléchargement dans {s} secondes...",
+      copied: "COPIÉ!"
+    },
+    es: {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "Acceso mundial",
+      lang_label: "Idioma",
+      theme_label: "Tema",
+      p1_title: "1. Importar audio",
+      drop_title: "Suelta tu audio aquí",
+      drop_subtitle: "Soporta WAV, MP3, M4A, FLAC",
+      p2_title: "2. Presets y Modos",
+      preset_label: "Preset",
+      mode_label: "Modo",
+      mode_soft: "Modo: Soft",
+      mode_punch: "Modo: Punch",
+      mode_hard: "Modo: Hard",
+      mode_ultra: "Modo: Ultra Trap",
+      btn_master: "Masterizar",
+      cleanup_label: "Mud-cleaner (auto) y ancho ATL",
+      p3_title: "3. Reproducción, A/B, Exportar",
+      player_label: "Salida masterizada",
+      ab_input: "ENTRADA (Original)",
+      ab_output: "SALIDA (Masterizada)",
+      btn_wav: "Descargar WAV",
+      btn_report: "Descargar informe PDF",
+      meter_in_rms: "RMS (entrada)",
+      meter_in_lufs: "LUFS (entrada, aprox.)",
+      meter_out_rms: "RMS (salida)",
+      meter_out_lufs: "LUFS (salida, aprox.)",
+      meter_delta: "Diferencia",
+      meter_gain: "Ganancia RMS",
+      meter_lufs_delta: "Cambio LUFS",
+      meter_autogain: "Auto-gain",
+      alert_import_first: "Primero importa un archivo de audio.",
+      status_processing: "Procesando…",
+      status_master: "Masterizar",
+      report_title: "FREEBUN AUDIO MASTERING — Informe del ingeniero",
+      mud_auto: "Mud Cleaner: AUTO",
+      mud_off: "Mud Cleaner: OFF",
+      width_on: "ATL Width: ON",
+      width_off: "ATL Width: OFF",
+      rep_on: "ON",
+      rep_off: "OFF",
+      rep_auto: "AUTO",
+      countdown_support: "Descarga en {s} segundos...",
+      countdown_ignore: "Descarga en {s} segundos...",
+      copied: "¡COPIADO!"
+    },
+    de: {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "Weltweiter Zugang",
+      lang_label: "Sprache",
+      theme_label: "Theme",
+      p1_title: "1. Audio importieren",
+      drop_title: "Audio hier ablegen",
+      drop_subtitle: "Unterstützt WAV, MP3, M4A, FLAC",
+      p2_title: "2. Presets & Modi",
+      preset_label: "Preset",
+      mode_label: "Modus",
+      mode_soft: "Modus: Soft",
+      mode_punch: "Modus: Punch",
+      mode_hard: "Modus: Hard",
+      mode_ultra: "Modus: Ultra Trap",
+      btn_master: "Mastern",
+      cleanup_label: "Mud-cleaner (auto) & ATL-Breite",
+      p3_title: "3. Playback, A/B, Export",
+      player_label: "Master-Ausgang",
+      ab_input: "EINGANG (Original)",
+      ab_output: "AUSGANG (Gemastert)",
+      btn_wav: "WAV herunterladen",
+      btn_report: "PDF-Report herunterladen",
+      meter_in_rms: "Input RMS",
+      meter_in_lufs: "LUFS (Input, approx.)",
+      meter_out_rms: "Output RMS",
+      meter_out_lufs: "LUFS (Output, approx.)",
+      meter_delta: "Delta",
+      meter_gain: "RMS Gain",
+      meter_lufs_delta: "LUFS Änderung",
+      meter_autogain: "Auto-gain",
+      alert_import_first: "Bitte zuerst eine Audiodatei importieren.",
+      status_processing: "Verarbeite…",
+      status_master: "Mastern",
+      report_title: "FREEBUN AUDIO MASTERING — Engineer Report",
+      mud_auto: "Mud Cleaner: AUTO",
+      mud_off: "Mud Cleaner: OFF",
+      width_on: "ATL Width: ON",
+      width_off: "ATL Width: OFF",
+      rep_on: "ON",
+      rep_off: "OFF",
+      rep_auto: "AUTO",
+      countdown_support: "Download in {s} Sekunden...",
+      countdown_ignore: "Download in {s} Sekunden...",
+      copied: "KOPIERT!"
+    },
+    'zh-Hans': {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "全球访问",
+      lang_label: "语言",
+      theme_label: "主题",
+      p1_title: "1. 导入音频",
+      drop_title: "将音频拖放到此处",
+      drop_subtitle: "支持 WAV, MP3, M4A, FLAC",
+      p2_title: "2. 预设与模式",
+      preset_label: "预设",
+      mode_label: "模式",
+      mode_soft: "模式：Soft",
+      mode_punch: "模式：Punch",
+      mode_hard: "模式：Hard",
+      mode_ultra: "模式：Ultra Trap",
+      btn_master: "开始母带",
+      cleanup_label: "Mud-cleaner（自动）与 ATL 宽度",
+      p3_title: "3. 播放、A/B、导出",
+      player_label: "母带输出",
+      ab_input: "输入（原始）",
+      ab_output: "输出（母带）",
+      btn_wav: "下载 WAV",
+      btn_report: "下载 PDF 报告",
+      meter_in_rms: "输入 RMS",
+      meter_in_lufs: "LUFS（输入，估算）",
+      meter_out_rms: "输出 RMS",
+      meter_out_lufs: "LUFS（输出，估算）",
+      meter_delta: "变化",
+      meter_gain: "RMS 增益",
+      meter_lufs_delta: "LUFS 变化",
+      meter_autogain: "自动增益",
+      alert_import_first: "请先导入音频文件。",
+      status_processing: "处理中…",
+      status_master: "开始母带",
+      report_title: "FREEBUN AUDIO MASTERING — 工程报告",
+      mud_auto: "Mud Cleaner：自动",
+      mud_off: "Mud Cleaner：关闭",
+      width_on: "ATL Width：开",
+      width_off: "ATL Width：关",
+      rep_on: "开",
+      rep_off: "关",
+      rep_auto: "自动",
+      countdown_support: "{s}秒后开始下载...",
+      countdown_ignore: "{s}秒后开始下载...",
+      copied: "已复制!"
+    },
+    ja: {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "世界中でアクセス",
+      lang_label: "言語",
+      theme_label: "テーマ",
+      p1_title: "1. 音声を読み込み",
+      drop_title: "音声をここにドロップ",
+      drop_subtitle: "WAV, MP3, M4A, FLAC に対応",
+      p2_title: "2. プリセットとモード",
+      preset_label: "プリセット",
+      mode_label: "モード",
+      mode_soft: "モード：Soft",
+      mode_punch: "モード：Punch",
+      mode_hard: "モード：Hard",
+      mode_ultra: "モード：Ultra Trap",
+      btn_master: "マスター",
+      cleanup_label: "Mud-cleaner（自動）& ATL Width",
+      p3_title: "3. 再生、A/B、書き出し",
+      player_label: "マスター出力",
+      ab_input: "入力（オリジナル）",
+      ab_output: "出力（マスター）",
+      btn_wav: "WAVをダウンロード",
+      btn_report: "PDFレポートをダウンロード",
+      meter_in_rms: "入力 RMS",
+      meter_in_lufs: "LUFS（入力・概算）",
+      meter_out_rms: "出力 RMS",
+      meter_out_lufs: "LUFS（出力・概算）",
+      meter_delta: "差分",
+      meter_gain: "RMS増加",
+      meter_lufs_delta: "LUFS変化",
+      meter_autogain: "オートゲイン",
+      alert_import_first: "先に音声ファイルを読み込んでください。",
+      status_processing: "処理中…",
+      status_master: "マスター",
+      report_title: "FREEBUN AUDIO MASTERING — エンジニアレポート",
+      mud_auto: "Mud Cleaner: AUTO",
+      mud_off: "Mud Cleaner: OFF",
+      width_on: "ATL Width: ON",
+      width_off: "ATL Width: OFF",
+      rep_on: "ON",
+      rep_off: "OFF",
+      rep_auto: "AUTO",
+      countdown_support: "{s}秒後にダウンロード開始...",
+      countdown_ignore: "{s}秒後にダウンロード開始...",
+      copied: "コピー完了!"
+    },
+    pt: {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "Acesso mundial",
+      lang_label: "Idioma",
+      theme_label: "Tema",
+      p1_title: "1. Importar áudio",
+      drop_title: "Solte seu áudio aqui",
+      drop_subtitle: "Suporta WAV, MP3, M4A, FLAC",
+      p2_title: "2. Presets e Modos",
+      preset_label: "Preset",
+      mode_label: "Modo",
+      mode_soft: "Modo: Soft",
+      mode_punch: "Modo: Punch",
+      mode_hard: "Modo: Hard",
+      mode_ultra: "Modo: Ultra Trap",
+      btn_master: "Masterizar",
+      cleanup_label: "Mud-cleaner (auto) & Largura ATL",
+      p3_title: "3. Reprodução, A/B, Exportar",
+      player_label: "Saída masterizada",
+      ab_input: "ENTRADA (Original)",
+      ab_output: "SAÍDA (Masterizada)",
+      btn_wav: "Baixar WAV",
+      btn_report: "Baixar relatório PDF",
+      meter_in_rms: "RMS Entrada",
+      meter_in_lufs: "LUFS (entrada, aprox.)",
+      meter_out_rms: "RMS Saída",
+      meter_out_lufs: "LUFS (saída, aprox.)",
+      meter_delta: "Diferença",
+      meter_gain: "Ganho RMS",
+      meter_lufs_delta: "Mudança LUFS",
+      meter_autogain: "Auto-gain",
+      alert_import_first: "Importe um arquivo de áudio primeiro.",
+      status_processing: "Processando…",
+      status_master: "Masterizar",
+      report_title: "FREEBUN AUDIO MASTERING — Relatório do engenheiro",
+      mud_auto: "Mud Cleaner: AUTO",
+      mud_off: "Mud Cleaner: OFF",
+      width_on: "ATL Width: ON",
+      width_off: "ATL Width: OFF",
+      rep_on: "ON",
+      rep_off: "OFF",
+      rep_auto: "AUTO",
+      countdown_support: "Download em {s} segundos...",
+      countdown_ignore: "Download em {s} segundos...",
+      copied: "COPIADO!"
+    },
+    'ar-SA': {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "وصول عالمي",
+      lang_label: "اللغة",
+      theme_label: "النمط",
+      p1_title: "1. استيراد الصوت",
+      drop_title: "أسقط الصوت هنا",
+      drop_subtitle: "يدعم WAV, MP3, M4A, FLAC",
+      p2_title: "2. الإعدادات المسبقة والأوضاع",
+      preset_label: "Preset",
+      mode_label: "الوضع",
+      mode_soft: "الوضع: Soft",
+      mode_punch: "الوضع: Punch",
+      mode_hard: "الوضع: Hard",
+      mode_ultra: "الوضع: Ultra Trap",
+      btn_master: "ماستر",
+      cleanup_label: "Mud-cleaner (تلقائي) و ATL Width",
+      p3_title: "3. التشغيل، A/B، التصدير",
+      player_label: "الخروج بعد الماستر",
+      ab_input: "الدخل (الأصلي)",
+      ab_output: "الخروج (المعالج)",
+      btn_wav: "تنزيل WAV",
+      btn_report: "تنزيل تقرير PDF",
+      meter_in_rms: "RMS (الدخل)",
+      meter_in_lufs: "LUFS (الدخل، تقريبي)",
+      meter_out_rms: "RMS (الخروج)",
+      meter_out_lufs: "LUFS (الخروج، تقريبي)",
+      meter_delta: "الفرق",
+      meter_gain: "زيادة RMS",
+      meter_lufs_delta: "تغير LUFS",
+      meter_autogain: "Auto-gain",
+      alert_import_first: "قم باستيراد ملف صوتي أولاً.",
+      status_processing: "جارٍ المعالجة…",
+      status_master: "ماستر",
+      report_title: "FREEBUN AUDIO MASTERING — تقرير مهندس الصوت",
+      mud_auto: "Mud Cleaner: AUTO",
+      mud_off: "Mud Cleaner: OFF",
+      width_on: "ATL Width: ON",
+      width_off: "ATL Width: OFF",
+      rep_on: "ON",
+      rep_off: "OFF",
+      rep_auto: "AUTO",
+      countdown_support: "التحميل يبدأ خلال {s} ثانية...",
+      countdown_ignore: "التحميل يبدأ خلال {s} ثانية...",
+      copied: "تم النسخ!"
+    },
+    ru: {
+      app_title: "FREEBUN Audio Mastering",
+      app_sub: "Мировой доступ",
+      lang_label: "Язык",
+      theme_label: "Тема",
+      p1_title: "1. Импорт аудио",
+      drop_title: "Перетащите аудио сюда",
+      drop_subtitle: "Поддерживает WAV, MP3, M4A, FLAC",
+      p2_title: "2. Пресеты и режимы",
+      preset_label: "Пресет",
+      mode_label: "Режим",
+      mode_soft: "Режим: Soft",
+      mode_punch: "Режим: Punch",
+      mode_hard: "Режим: Hard",
+      mode_ultra: "Режим: Ultra Trap",
+      btn_master: "Мастеринг",
+      cleanup_label: "Mud-cleaner (авто) и ATL ширина",
+      p3_title: "3. Прослушивание, A/B, экспорт",
+      player_label: "Выход",
+      ab_input: "ВХОД (Оригинал)",
+      ab_output: "ВЫХОД (Мастер)",
+      btn_wav: "Скачать WAV",
+      btn_report: "Скачать PDF-отчёт",
+      meter_in_rms: "RMS (вход)",
+      meter_in_lufs: "LUFS (вход, прибл.)",
+      meter_out_rms: "RMS (выход)",
+      meter_out_lufs: "LUFS (выход, прибл.)",
+      meter_delta: "Разница",
+      meter_gain: "Прирост RMS",
+      meter_lufs_delta: "Изменение LUFS",
+      meter_autogain: "Auto-gain",
+      alert_import_first: "Сначала импортируйте аудио.",
+      status_processing: "Обработка…",
+      status_master: "Мастеринг",
+      report_title: "FREEBUN AUDIO MASTERING — Отчёт инженера",
+      mud_auto: "Mud Cleaner: AUTO",
+      mud_off: "Mud Cleaner: OFF",
+      width_on: "ATL Width: ON",
+      width_off: "ATL Width: OFF",
+      rep_on: "ON",
+      rep_off: "OFF",
+      rep_auto: "AUTO",
+      countdown_support: "Загрузка через {s} секунд...",
+      countdown_ignore: "Загрузка через {s} секунд...",
+      copied: "СКОПИРОВАНО!"
+    }
+  };
+
+  const $ = (id) => document.getElementById(id);
+
+  const langSelect = $('langSelect');
+  const themeSelect = $('themeSelect');
+  const tooltip = $('tooltip');
+  const donationModal = $('donationModal');
+  const cryptoAddressesDiv = $('cryptoAddresses');
+  const donationButtonsDiv = $('donationButtons');
+  const downloadCountdownSpan = $('downloadCountdown');
+  const downloadWavBtn = $('downloadWavBtn');
+  const closeModalBtn = $('closeModalBtn');
+
+  function currentDict(){
+    const code = langSelect.value || 'en';
+    return i18n[code] || i18n.en;
+  }
+
+  function t(key){
+    const dict = currentDict();
+    return (dict && dict[key]) ? dict[key] : (i18n.en[key] || key);
+  }
+
+  function applyI18n(){
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      el.textContent = t(key);
+    });
+    const lc = (langSelect.value || 'en');
+    const isRTL = lc.startsWith('ar');
+    document.documentElement.lang = lc;
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    syncToggleLabels();
+  }
+
+  function initLanguageUI(){
+    LANGS.forEach(l => {
+      const opt = document.createElement('option');
+      opt.value = l.code;
+      opt.textContent = l.name;
+      langSelect.appendChild(opt);
+    });
+    const nav = (navigator.language || 'en').toLowerCase();
+    const best = LANGS.map(x=>x.code).find(c => nav === c.toLowerCase() || nav.startsWith(c.toLowerCase()));
+    langSelect.value = best || 'en';
+    langSelect.addEventListener('change', () => {
+      localStorage.setItem('freebun_lang', langSelect.value);
+      applyI18n();
+      playSound('lang');
+    });
+    const saved = localStorage.getItem('freebun_lang');
+    if (saved && LANGS.some(l => l.code === saved)) langSelect.value = saved;
+  }
+
+  function initThemeUI(){
+    const saved = localStorage.getItem('freebun_theme');
+    if (saved) themeSelect.value = saved;
+    document.documentElement.setAttribute('data-theme', themeSelect.value);
+    themeSelect.addEventListener('change', () => {
+      document.body.classList.add('theme-transition');
+      setTimeout(() => {
+        document.documentElement.setAttribute('data-theme', themeSelect.value);
+        localStorage.setItem('freebun_theme', themeSelect.value);
+        playSound('theme');
+      }, 400);
+      setTimeout(() => {
+        document.body.classList.remove('theme-transition');
+      }, 800);
+    });
+  }
+
+  function showTooltip(text, x, y){
+    tooltip.style.display = 'block';
+    tooltip.textContent = text;
+    const pad = 10;
+    const maxX = window.innerWidth - tooltip.offsetWidth - pad;
+    const maxY = window.innerHeight - tooltip.offsetHeight - pad;
+    tooltip.style.left = Math.max(pad, Math.min(x + 12, maxX)) + 'px';
+    tooltip.style.top = Math.max(pad, Math.min(y + 12, maxY)) + 'px';
+  }
+
+  function hideTooltip(){
+    tooltip.style.display = 'none';
+  }
+
+  function initDocs(){
+    document.querySelectorAll('.infoBtn').forEach(btn => {
+      const key = btn.getAttribute('data-doc');
+      btn.addEventListener('mouseenter', (e) => {
+        const mapBody = {
+          preset: t('doc_preset'),
+          mode: t('doc_mode'),
+          mud: t('doc_mud'),
+          width: t('doc_width')
+        };
+        showTooltip(mapBody[key] || '', e.clientX, e.clientY);
+      });
+      btn.addEventListener('mousemove', (e) => showTooltip(tooltip.textContent, e.clientX, e.clientY));
+      btn.addEventListener('mouseleave', hideTooltip);
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const mapBody = { preset: t('doc_preset'), mode: t('doc_mode'), mud: t('doc_mud'), width: t('doc_width') };
+        alert(mapBody[key] || '');
+      });
+    });
+    document.addEventListener('scroll', hideTooltip, { passive: true });
+  }
+
+  let audioBuffer = null;
+  let ABstate = false;
+  let currentDownloadURL = null;
+  let ctx = null;
+  let soundCtx = null;
+
+  const fileInput = $('fileInput');
+  const originalPlayer = $('originalPlayer');
+  const processedPlayer = $('processedPlayer');
+  const processBtn = $('processBtn');
+  const btnInput = $('btnInput');
+  const btnOutput = $('btnOutput');
+  const reportBtn = $('reportBtn');
+  const inputRMSTxt = $('inputRMS');
+  const outputRMSTxt = $('outputRMS');
+  const lufsInTxt = $('lufsIn');
+  const lufsOutTxt = $('lufsOut');
+  const deltaRmsTxt = $('deltaRms');
+  const deltaLufsTxt = $('deltaLufs');
+  const autoGainTxt = $('autoGainTxt');
+  const presetSelect = $('presetSelect');
+  const modeSelect = $('modeSelect');
+  const mudToggle = $('mudToggle');
+  const widthToggle = $('widthToggle');
+  const dropZone = $('dropZone');
+
+  const state = {
+    lastReport: null,
+    lastInputFloat: null,
+    lastOutputFloat: null,
+    lastSampleRate: null
+  };
+
+  let dlcPresets = [];
+  let dlcModes = [];
+
+  function playSound(type) {
+    if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = soundCtx.currentTime;
+    const gain = soundCtx.createGain();
+    gain.connect(soundCtx.destination);
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+    const osc = soundCtx.createOscillator();
+    osc.connect(gain);
+    switch (type) {
+      case 'click':
+        osc.frequency.value = 880;
+        osc.type = 'sine';
+        osc.start(now);
+        osc.stop(now + 0.08);
+        break;
+      case 'theme':
+        osc.frequency.value = 660;
+        osc.type = 'sine';
+        osc.start(now);
+        osc.stop(now + 0.1);
+        break;
+      case 'lang':
+        osc.frequency.value = 523.25;
+        osc.type = 'sine';
+        osc.start(now);
+        osc.stop(now + 0.1);
+        break;
+      case 'load':
+        osc.frequency.value = 440;
+        osc.type = 'sine';
+        osc.start(now);
+        osc.stop(now + 0.4);
+        const osc2 = soundCtx.createOscillator();
+        osc2.connect(gain);
+        osc2.frequency.value = 587.33;
+        osc2.type = 'sine';
+        osc2.start(now + 0.2);
+        osc2.stop(now + 0.6);
+        break;
+      case 'master':
+        osc.frequency.value = 659.25;
+        osc.type = 'sine';
+        osc.start(now);
+        osc.stop(now + 0.15);
+        const osc3 = soundCtx.createOscillator();
+        osc3.connect(gain);
+        osc3.frequency.value = 880;
+        osc3.type = 'sine';
+        osc3.start(now + 0.1);
+        osc3.stop(now + 0.25);
+        break;
+      default: break;
+    }
+  }
+
+  function initAudioContext(){
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === 'suspended') ctx.resume();
+    if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (soundCtx.state === 'suspended') soundCtx.resume();
+  }
+
+  function computeRMS(channelData){
+    if (!channelData || channelData.length === 0) return 0;
+    let sum = 0;
+    for (let i=0;i<channelData.length;i++) sum += channelData[i]*channelData[i];
+    return Math.sqrt(sum / channelData.length);
+  }
+
+  function computePeak(channelData){
+    if (!channelData || channelData.length === 0) return 0;
+    let p = 0;
+    for (let i=0;i<channelData.length;i++) p = Math.max(p, Math.abs(channelData[i]));
+    return p;
+  }
+
+  function approxLUFS(rms){
+    if (rms <= 0) return '--';
+    const db = 20 * Math.log10(rms + 1e-12);
+    const lufs = db - 12;
+    if (!isFinite(lufs)) return '--';
+    return lufs.toFixed(1);
+  }
+
+  function addDlcPreset(preset) {
+    const presetSelect = document.getElementById('presetSelect');
+    const option = document.createElement('option');
+    option.value = preset.id;
+    option.textContent = preset.name;
+    presetSelect.appendChild(option);
+    dlcPresets.push(preset);
+  }
+
+  function addDlcMode(mode) {
+    const modeSelect = document.getElementById('modeSelect');
+    const option = document.createElement('option');
+    option.value = mode.id;
+    option.textContent = mode.name;
+    modeSelect.appendChild(option);
+    dlcModes.push(mode);
+  }
+
+  function applyDlc(data) {
+    if (data.presets && Array.isArray(data.presets)) {
+      data.presets.forEach(p => { if (p.id && p.name && p.params) addDlcPreset(p); });
+    }
+    if (data.modes && Array.isArray(data.modes)) {
+      data.modes.forEach(m => { if (m.id && m.name && m.modifiers) addDlcMode(m); });
+    }
+    localStorage.setItem('freebun_dlc', JSON.stringify({ presets: dlcPresets, modes: dlcModes }));
+    document.getElementById('dlcStatus').textContent = `✅ Loaded ${data.presets?.length || 0} presets, ${data.modes?.length || 0} modes.`;
+  }
+
+  function loadDlcFromFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        applyDlc(data);
+      } catch (err) {
+        alert('Invalid DLC file: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function restoreDlc() {
+    const stored = localStorage.getItem('freebun_dlc');
+    if (stored) {
+      try {
+        const data = JSON.parse(stored);
+        if (data.presets) data.presets.forEach(p => addDlcPreset(p));
+        if (data.modes) data.modes.forEach(m => addDlcMode(m));
+        document.getElementById('dlcStatus').textContent = `🔄 Restored ${data.presets?.length || 0} presets, ${data.modes?.length || 0} modes.`;
+      } catch (e) {}
+    }
+  }
+
+  function getPresetParams(preset, mode) {
+    let params = {
+      gain: 1.0,
+      comp: { threshold: -24, ratio: 4, attack: 0.01, release: 0.15, knee: 12 },
+      lowShelfGain: 3.0,
+      highShelfGain: 2.5,
+      mudReduction: 0,
+      limiterThr: -3,
+      width: 1.05
+    };
+    const dlcPreset = dlcPresets.find(p => p.id === preset);
+    if (dlcPreset) {
+      params = { ...params, ...dlcPreset.params };
+      if (dlcPreset.params.comp) params.comp = { ...params.comp, ...dlcPreset.params.comp };
+    } else {
+      if (preset === 'metro') {
+        params.gain = 1.0;
+        params.comp = { threshold: -22, ratio: 6, attack: 0.008, release: 0.12, knee: 10 };
+        params.lowShelfGain = 4.0;
+        params.highShelfGain = 3.0;
+        params.limiterThr = -2.5;
+        params.width = 1.04;
+      } else if (preset === 'soft') {
+        params.gain = 1.0;
+        params.comp = { threshold: -20, ratio: 3, attack: 0.015, release: 0.2, knee: 20 };
+        params.lowShelfGain = 1.5;
+        params.highShelfGain = 1.5;
+        params.limiterThr = -4;
+        params.width = 1.02;
+      } else if (preset === 'punch') {
+        params.gain = 1.0;
+        params.comp = { threshold: -24, ratio: 8, attack: 0.005, release: 0.1, knee: 8 };
+        params.lowShelfGain = 4.0;
+        params.highShelfGain = 3.5;
+        params.limiterThr = -2.0;
+        params.width = 1.03;
+      }
+    }
+    if (mode === 'softMode') {
+      params.gain *= 0.90;
+      params.limiterThr -= 0.5;
+      params.mudReduction = 0;
+    } else if (mode === 'punchMode') {
+      params.gain *= 1.05;
+      params.comp.ratio *= 1.10;
+      params.limiterThr += 0.5;
+      params.mudReduction = -1.0;
+    } else if (mode === 'hardMode') {
+      params.gain *= 1.10;
+      params.comp.ratio *= 1.20;
+      params.limiterThr += 1.0;
+      params.mudReduction = -1.5;
+    } else if (mode === 'ultraMode') {
+      params.gain *= 1.15;
+      params.comp.ratio *= 1.30;
+      params.limiterThr += 1.5;
+      params.mudReduction = -2.0;
+    }
+    const dlcMode = dlcModes.find(m => m.id === mode);
+    if (dlcMode) {
+      const mod = dlcMode.modifiers;
+      if (mod.gain) params.gain *= mod.gain;
+      if (mod.compRatio) params.comp.ratio *= mod.compRatio;
+      if (mod.limiterThr) params.limiterThr += mod.limiterThr;
+      if (mod.mudReduction) params.mudReduction += mod.mudReduction;
+    }
+    return params;
+  }
+
+  function bufferToWave(abuffer, len){
+    const numOfChan = abuffer.numberOfChannels;
+    const length = len * numOfChan * 2 + 44;
+    const buffer = new ArrayBuffer(length);
+    const view = new DataView(buffer);
+    const channels = [];
+    let pos = 0;
+    const setUint16 = (data) => { view.setUint16(pos, data, true); pos += 2; };
+    const setUint32 = (data) => { view.setUint32(pos, data, true); pos += 4; };
+    setUint32(0x46464952);
+    setUint32(length - 8);
+    setUint32(0x45564157);
+    setUint32(0x20746d66);
+    setUint32(16);
+    setUint16(1);
+    setUint16(numOfChan);
+    setUint32(abuffer.sampleRate);
+    setUint32(abuffer.sampleRate * numOfChan * 2);
+    setUint16(numOfChan * 2);
+    setUint16(16);
+    setUint32(0x61746164);
+    setUint32(length - pos - 4);
+    for (let i=0;i<numOfChan;i++) channels.push(abuffer.getChannelData(i));
+    let offset = 0;
+    while (pos < length){
+      for (let i=0;i<numOfChan;i++){
+        let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+        sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+        view.setInt16(pos, sample, true);
+        pos += 2;
+      }
+      offset++;
+    }
+    return new Blob([buffer], { type: 'audio/wav' });
+  }
+
+  function syncToggleLabels(){
+    const mudAuto = mudToggle.dataset.state !== 'off';
+    const widthOn = widthToggle.dataset.state !== 'off';
+    mudToggle.textContent = mudAuto ? t('mud_auto') : t('mud_off');
+    widthToggle.textContent = widthOn ? t('width_on') : t('width_off');
+  }
+
+  function readToggleState(btn){ return btn.dataset.state !== 'off'; }
+
+  async function processMastering(){
+    if (!audioBuffer){ alert(t('alert_import_first')); return; }
+    initAudioContext();
+    const ch0 = audioBuffer.getChannelData(0);
+    const inputRMS = computeRMS(ch0);
+    const inputPeak = computePeak(ch0);
+    inputRMSTxt.textContent = inputRMS.toFixed(4);
+    lufsInTxt.textContent = approxLUFS(inputRMS);
+    const preset = presetSelect.value;
+    const mode = modeSelect.value;
+    const params = getPresetParams(preset, mode);
+    const mudAuto = readToggleState(mudToggle);
+    const widthOn = readToggleState(widthToggle);
+    const targetRMS = 0.08;
+    let autoGain = targetRMS / Math.max(inputRMS, 1e-9);
+    if (autoGain > 2.0) autoGain = 2.0;
+    if (autoGain < 0.5) autoGain = 0.5;
+    autoGainTxt.textContent = autoGain.toFixed(2) + 'x';
+    let mudCut = params.mudReduction || 0;
+    if (mudAuto){
+      if (inputRMS > 0.06) mudCut -= 0.5;
+      if (inputRMS > 0.10) mudCut -= 1.0;
+      if (inputRMS > 0.15) mudCut -= 1.5;
+    }
+    const offline = new OfflineAudioContext(audioBuffer.numberOfChannels, audioBuffer.length, audioBuffer.sampleRate);
+    const src = offline.createBufferSource();
+    src.buffer = audioBuffer;
+    const safetyGain = offline.createGain();
+    safetyGain.gain.value = 0.95;
+    const preGain = offline.createGain();
+    preGain.gain.value = params.gain * autoGain;
+    const comp = offline.createDynamicsCompressor();
+    comp.threshold.value = params.comp.threshold;
+    comp.knee.value = params.comp.knee;
+    comp.ratio.value = params.comp.ratio;
+    comp.attack.value = params.comp.attack;
+    comp.release.value = params.comp.release;
+    const low = offline.createBiquadFilter();
+    low.type = 'lowshelf';
+    low.frequency.value = 90;
+    low.gain.value = params.lowShelfGain;
+    const mud = offline.createBiquadFilter();
+    mud.type = 'peaking';
+    mud.frequency.value = 280;
+    mud.Q.value = 0.8;
+    mud.gain.value = mudCut;
+    const high = offline.createBiquadFilter();
+    high.type = 'highshelf';
+    high.frequency.value = 8500;
+    high.gain.value = params.highShelfGain;
+    let lastNode = high;
+    const merger = offline.createChannelMerger(2);
+    if (audioBuffer.numberOfChannels === 1){
+      const monoGainL = offline.createGain();
+      const monoGainR = offline.createGain();
+      monoGainL.gain.value = widthOn ? params.width : 1.0;
+      monoGainR.gain.value = widthOn ? (2.0 - params.width) : 1.0;
+      lastNode.connect(monoGainL);
+      lastNode.connect(monoGainR);
+      monoGainL.connect(merger, 0, 0);
+      monoGainR.connect(merger, 0, 1);
+    } else {
+      const splitter = offline.createChannelSplitter(2);
+      const leftGain = offline.createGain();
+      const rightGain = offline.createGain();
+      leftGain.gain.value = widthOn ? params.width : 1.0;
+      rightGain.gain.value = widthOn ? (2.0 - params.width) : 1.0;
+      lastNode.connect(splitter);
+      splitter.connect(leftGain, 0);
+      splitter.connect(rightGain, 1);
+      leftGain.connect(merger, 0, 0);
+      rightGain.connect(merger, 0, 1);
+    }
+    const limiter = offline.createDynamicsCompressor();
+    limiter.threshold.value = params.limiterThr;
+    limiter.knee.value = 0;
+    limiter.ratio.value = 12;
+    limiter.attack.value = 0.003;
+    limiter.release.value = 0.08;
+    src.connect(safetyGain);
+    safetyGain.connect(preGain);
+    preGain.connect(comp);
+    comp.connect(low);
+    low.connect(mud);
+    mud.connect(high);
+    merger.connect(limiter);
+    limiter.connect(offline.destination);
+    src.start(0);
+    const rendered = await offline.startRendering();
+    const outCh0 = rendered.getChannelData(0);
+    const outputRMS = computeRMS(outCh0);
+    const outputPeak = computePeak(outCh0);
+    outputRMSTxt.textContent = outputRMS.toFixed(4);
+    lufsOutTxt.textContent = approxLUFS(outputRMS);
+    const inLufs = parseFloat(approxLUFS(inputRMS));
+    const outLufs = parseFloat(approxLUFS(outputRMS));
+    deltaRmsTxt.textContent = (outputRMS - inputRMS).toFixed(4);
+    deltaLufsTxt.textContent = (isFinite(inLufs) && isFinite(outLufs)) ? (outLufs - inLufs).toFixed(1) : '--';
+    const wavBlob = bufferToWave(rendered, rendered.length);
+    if (currentDownloadURL) URL.revokeObjectURL(currentDownloadURL);
+    currentDownloadURL = URL.createObjectURL(wavBlob);
+    processedPlayer.src = currentDownloadURL;
+    downloadWavBtn.disabled = false;
+    state.lastReport = {
+      timestampISO: new Date().toISOString(),
+      sampleRate: rendered.sampleRate,
+      channelsIn: audioBuffer.numberOfChannels,
+      lengthSamples: rendered.length,
+      preset, mode,
+      mudAuto, widthOn,
+      params, mudCut,
+      input: { rms: inputRMS, peak: inputPeak, lufsApprox: approxLUFS(inputRMS) },
+      output: { rms: outputRMS, peak: outputPeak, lufsApprox: approxLUFS(outputRMS) },
+      derived: {
+        crestIn: inputRMS > 0 ? (inputPeak / inputRMS) : 0,
+        crestOut: outputRMS > 0 ? (outputPeak / outputRMS) : 0,
+        rmsGain: outputRMS - inputRMS,
+        lufsDelta: (isFinite(inLufs) && isFinite(outLufs)) ? (outLufs - inLufs) : null,
+        autoGain
+      }
+    };
+    reportBtn.disabled = false;
+    playSound('master');
+    return rendered;
+  }
+
+  async function downloadPdfReport(){
+    if (!state.lastReport) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const margin = 42;
+    let y = margin;
+    const title = t('report_title');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text(title, margin, y);
+    y += 18;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text(state.lastReport.timestampISO, margin, y);
+    y += 18;
+    const addSection = (name) => {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text(name, margin, y);
+      y += 14;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+    };
+    const kv = (k, v) => {
+      doc.text(`${k}: ${v}`, margin, y);
+      y += 13;
+    };
+    const r = state.lastReport;
+    addSection(t('report_section_settings'));
+    kv(t('rep_preset'), r.preset);
+    kv(t('rep_mode'), r.mode);
+    kv(t('rep_mud'), r.mudAuto ? t('rep_auto') : t('rep_off'));
+    kv(t('rep_width'), r.widthOn ? t('rep_on') : t('rep_off'));
+    kv(t('rep_width_factor'), r.params.width);
+    kv(t('rep_limiter_thr'), r.params.limiterThr);
+    kv(t('rep_comp_thr'), r.params.comp.threshold);
+    kv(t('rep_comp_ratio'), r.params.comp.ratio);
+    kv(t('rep_low_shelf'), r.params.lowShelfGain);
+    kv(t('rep_high_shelf'), r.params.highShelfGain);
+    kv(t('rep_mud_cut'), r.mudCut);
+    y += 6;
+    addSection(t('report_section_metrics'));
+    kv(t('rep_input_rms'), r.input.rms.toFixed(6));
+    kv(t('rep_output_rms'), r.output.rms.toFixed(6));
+    kv(t('rep_input_peak'), r.input.peak.toFixed(6));
+    kv(t('rep_output_peak'), r.output.peak.toFixed(6));
+    kv(t('rep_input_lufs'), r.input.lufsApprox);
+    kv(t('rep_output_lufs'), r.output.lufsApprox);
+    kv(t('rep_rms_gain'), r.derived.rmsGain.toFixed(6));
+    kv(t('rep_autogain'), r.derived.autoGain.toFixed(3) + 'x');
+    kv(t('rep_crest_in'), r.derived.crestIn.toFixed(3));
+    kv(t('rep_crest_out'), r.derived.crestOut.toFixed(3));
+    if (r.derived.lufsDelta !== null) kv(t('rep_lufs_delta'), r.derived.lufsDelta.toFixed(2));
+    y += 6;
+    addSection(t('report_section_notes'));
+    doc.text('- ' + t('report_note1'), margin, y); y += 13;
+    doc.save('freebun-mastering-report.pdf');
+  }
+
+  // Donation Modal New Logic
+  function startDownload() {
+    if (currentDownloadURL) {
+      const a = document.createElement('a');
+      a.href = currentDownloadURL;
+      a.download = 'freebun-master.wav';
+      a.click();
+    }
+  }
+
+  function showDonationModal() {
+    donationModal.classList.add('active');
+    // Reset view
+    donationButtonsDiv.style.display = 'flex';
+    cryptoAddressesDiv.classList.remove('active');
+    downloadCountdownSpan.textContent = '';
+  }
+
+  function hideDonationModal() {
+    donationModal.classList.remove('active');
+  }
+
+  function startCountdown(seconds, showCrypto) {
+    let remaining = seconds;
+    donationButtonsDiv.style.display = 'none';
+    if (showCrypto) cryptoAddressesDiv.classList.add('active');
+    const updateCountdown = () => {
+      downloadCountdownSpan.textContent = t(showCrypto ? 'countdown_support' : 'countdown_ignore').replace('{s}', remaining);
+      if (remaining <= 0) {
+        hideDonationModal();
+        startDownload();
+        return;
+      }
+      remaining--;
+      setTimeout(updateCountdown, 1000);
+    };
+    updateCountdown();
+  }
+
+  // Support: show crypto addresses and action buttons (no auto-download)
+  function showSupportActions() {
+    donationButtonsDiv.style.display = 'none';
+    cryptoAddressesDiv.classList.add('active');
+    downloadCountdownSpan.textContent = '';
+  }
+
+  function performDownload() {
+    hideDonationModal();
+    startDownload();
+  }
+
+  // Copy button handlers
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.getAttribute('data-copy');
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = t('copied');
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'COPY';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+  });
+
+  // Modal button handlers
+  $('supportBtn').addEventListener('click', showSupportActions);
+  $('ignoreBtn').addEventListener('click', () => startCountdown(4, false));
+  $('justDownloadBtn').addEventListener('click', performDownload);
+  closeModalBtn.addEventListener('click', performDownload);
+
+  downloadWavBtn.addEventListener('click', () => {
+    if (currentDownloadURL) {
+      playSound('click');
+      showDonationModal();
+    }
+  });
+
+  function initUIState(){
+    mudToggle.dataset.state = 'auto';
+    widthToggle.dataset.state = 'on';
+    syncToggleLabels();
+  }
+
+  // File upload handlers
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+
+  async function handleFile(file) {
+    if (!file) return;
+    initAudioContext();
+    const url = URL.createObjectURL(file);
+    originalPlayer.src = url;
+    try{
+      const ab = await file.arrayBuffer();
+      audioBuffer = await ctx.decodeAudioData(ab);
+      const rms = computeRMS(audioBuffer.getChannelData(0));
+      inputRMSTxt.textContent = rms.toFixed(4);
+      lufsInTxt.textContent = approxLUFS(rms);
+      $('infoInput').textContent = t('info_input').replace('{sr}', audioBuffer.sampleRate).replace('{ch}', audioBuffer.numberOfChannels);
+      reportBtn.disabled = true;
+      downloadWavBtn.disabled = true;
+      playSound('load');
+    } catch(err){
+      console.error('Error loading audio', err);
+      alert(t('err_load_audio') + ': ' + err.message);
+    }
+  }
+
+  fileInput.addEventListener('change', async (e) => {
+    if (e.target.files.length) handleFile(e.target.files[0]);
+  });
+
+  processBtn.addEventListener('click', async () => {
+    playSound('click');
+    processBtn.disabled = true;
+    processBtn.textContent = t('status_processing');
+    try{
+      await processMastering();
+    } catch(err){
+      console.error('Mastering error', err);
+      alert(t('err_mastering') + ': ' + err.message);
+    } finally {
+      processBtn.disabled = false;
+      processBtn.textContent = t('status_master');
+    }
+  });
+
+  function switchAB(type) {
+    ABstate = (type === 'output');
+    btnInput.classList.toggle('active', type === 'input');
+    btnOutput.classList.toggle('active', type === 'output');
+    if (type === 'output' && currentDownloadURL) {
+      processedPlayer.currentTime = originalPlayer.currentTime;
+      originalPlayer.pause();
+      processedPlayer.play();
+    } else {
+      originalPlayer.currentTime = processedPlayer.currentTime;
+      processedPlayer.pause();
+      originalPlayer.play();
+    }
+  }
+
+  btnInput.addEventListener('click', () => { playSound('click'); switchAB('input'); });
+  btnOutput.addEventListener('click', () => { playSound('click'); switchAB('output'); });
+  mudToggle.addEventListener('click', () => { playSound('click'); mudToggle.dataset.state = (mudToggle.dataset.state === 'off') ? 'auto' : 'off'; syncToggleLabels(); });
+  widthToggle.addEventListener('click', () => { playSound('click'); widthToggle.dataset.state = (widthToggle.dataset.state === 'off') ? 'on' : 'off'; syncToggleLabels(); });
+  reportBtn.addEventListener('click', async () => { playSound('click'); try{ await downloadPdfReport(); } catch(err){ console.error('Report error', err); alert(t('err_report') + ': ' + err.message); } });
+
+  document.getElementById('dlcLoadBtn').addEventListener('click', () => { playSound('click'); document.getElementById('dlcFileInput').click(); });
+  document.getElementById('dlcFileInput').addEventListener('change', (e) => { if (e.target.files.length) loadDlcFromFile(e.target.files[0]); });
+  restoreDlc();
+
+  document.addEventListener('click', initAudioContext, { once: true });
+
+  initLanguageUI();
+  initThemeUI();
+  initUIState();
+  initDocs();
+  applyI18n();
+</script>
+</body>
+</html>
