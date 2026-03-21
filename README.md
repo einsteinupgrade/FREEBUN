@@ -3,9 +3,7 @@ FREEBUN Audio Mastering
 Professional, open‑source audio mastering in your browser
 No servers, no subscriptions, no limitations — just instant, high‑quality mastering with custom presets, DLC expansions, and a stunning immersive interface.
 
-https://img.shields.io/badge/License-MIT-yellow.svg
-https://img.shields.io/badge/PRs-welcome-brightgreen.svg
-https://img.shields.io/badge/Web%20Audio-API-blue
+
 
 🎧 Overview
 
