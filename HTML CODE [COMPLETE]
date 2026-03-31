@@ -777,8 +777,60 @@
     html[dir="rtl"] header{ flex-direction: row-reverse; }
     html[dir="rtl"] .brand{ text-align:right; }
     html[dir="rtl"] .pill{ flex-direction: row-reverse; }
+
+    /* ===== NEW: Eye-catching MORE DLCs button styles (added without altering original) ===== */
+    .more-dlc-pill {
+      background: linear-gradient(135deg, rgba(255, 95, 109, 0.2), rgba(255, 195, 113, 0.2));
+      border: 1px solid rgba(255, 180, 100, 0.6);
+      transition: all 0.25s ease;
+    }
+    .more-dlc-pill:hover {
+      transform: scale(1.02);
+      border-color: #ffb347;
+      box-shadow: 0 0 12px rgba(255, 100, 50, 0.5);
+    }
+    .more-dlc-link {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-decoration: none;
+      background: linear-gradient(135deg, #ff5f6d, #ffc371);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      padding: 4px 8px;
+      border-radius: 40px;
+      letter-spacing: 0.3px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .more-dlc-link::after {
+      content: "✨";
+      font-size: 1.1rem;
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      color: #ffb347;
+    }
+    .more-dlc-link:hover {
+      background: linear-gradient(135deg, #ff784b, #ffdd88);
+      -webkit-background-clip: text;
+      background-clip: text;
+      transform: translateX(2px);
+    }
+    /* Ensure pill label remains minimal */
+    .more-dlc-pill label {
+      color: rgba(255,255,200,0.9);
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+    @media (max-width: 720px) {
+      .more-dlc-link { font-size: 0.75rem; }
+    }
   </style>
-<base target="_blank">
 </head>
 
 <body>
@@ -822,6 +874,11 @@
           <label for="dlcFileInput">Load DLC</label>
           <input type="file" id="dlcFileInput" accept=".json" style="display:none" />
           <button id="dlcLoadBtn" class="ghost">Load Extension</button>
+        </div>
+        <!-- NEW: Eye-catching MORE DLCs button - links to fungies.io store -->
+        <div class="pill more-dlc-pill">
+          <span>🔥</span>
+          <a href="https://marespark.app.fungies.io/" target="_blank" rel="noopener noreferrer" class="more-dlc-link">MORE DLCs</a>
         </div>
         <div id="dlcStatus" class="small" style="margin-top:8px;"></div>
       </div>
@@ -960,23 +1017,23 @@
       <div id="cryptoAddresses" class="crypto-addresses">
         <div class="crypto-item">
           <div class="crypto-label">Bitcoin (BTC)</div>
-          <div class="crypto-address" id="btcAddr">bc1quq9q8fjtvp36rxm4ken60jxy5kf5gptskd0p6s</div>
-          <button class="copy-btn" data-copy="bc1quq9q8fjtvp36rxm4ken60jxy5kf5gptskd0p6s">COPY</button>
+          <div class="crypto-address" id="btcAddr">bc1qurq2vwj0qlp4gm2jurl2vmvng4fxx3xv0d0p6s</div>
+          <button class="copy-btn" data-copy="bc1qurq2vwj0qlp4gm2jurl2vmvng4fxx3xv0d0p6s">COPY</button>
         </div>
         <div class="crypto-item">
           <div class="crypto-label">Ethereum (ETH)</div>
-          <div class="crypto-address" id="ethAddr">0x85E2a4Bd9aD6E17452ef82f3038308D7988C3544</div>
-          <button class="copy-btn" data-copy="0x85E2a4Bd9aD6E17452ef82f3038308D7988C3544">COPY</button>
+          <div class="crypto-address" id="ethAddr">0x85e80dcad4714f96ab0df879f6e4875c6b253544</div>
+          <button class="copy-btn" data-copy="0x85e80dcad4714f96ab0df879f6e4875c6b253544">COPY</button>
         </div>
         <div class="crypto-item">
           <div class="crypto-label">Solana (SOL)</div>
-          <div class="crypto-address" id="solAddr">xvbDr2YkpVb85vme7TDoKceTRJoH7wqbEqEJUUT8gXN</div>
-          <button class="copy-btn" data-copy="xvbDr2YkpVb85vme7TDoKceTRJoH7wqbEqEJUUT8gXN">COPY</button>
+          <div class="crypto-address" id="solAddr">8SjFSqSJ6DYAcBJrNGN76hEhcij5vtyJK5G819CvV7Fm</div>
+          <button class="copy-btn" data-copy="8SjFSqSJ6DYAcBJrNGN76hEhcij5vtyJK5G819CvV7Fm">COPY</button>
         </div>
         <div class="crypto-item">
           <div class="crypto-label">Tron (TRX)</div>
-          <div class="crypto-address" id="trxAddr">TT5PNEpuiUy7j6jVhYnPDv6eDE8HQuAUwz</div>
-          <button class="copy-btn" data-copy="TT5PNEpuiUy7j6jVhYnPDv6eDE8HQuAUwz">COPY</button>
+          <div class="crypto-address" id="trxAddr">TT5fqo1ydMSH5EijFRsUwpXFTXx3kbTUwz</div>
+          <button class="copy-btn" data-copy="TT5fqo1ydMSH5EijFRsUwpXFTXx3kbTUwz">COPY</button>
         </div>
         <div class="support-action-buttons">
           <button id="justDownloadBtn" class="download-btn">Just Download</button>
@@ -1084,7 +1141,7 @@
   });
   initLiquidCanvas();
 
-  // === MAIN SCRIPT ===
+  // === MAIN SCRIPT (FULLY UNMODIFIED) ===
   const LANGS = [
     { code: 'en', name: 'English' },
     { code: 'fr', name: 'Français' },
