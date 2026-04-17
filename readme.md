@@ -394,6 +394,3 @@ Official Tool Web Link - freebunesu.netlify.app
 GitHub Repository – https://github.com/einsteinupgrade/FREEBUN-by-einstein-upgrade-
 
 Official DLC Store – https://marespark.app.fungies.io
-
-Developer Twitter – @einsteinupgrade
-
